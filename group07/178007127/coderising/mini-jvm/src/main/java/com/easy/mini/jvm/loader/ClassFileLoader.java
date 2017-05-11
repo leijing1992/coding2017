@@ -9,14 +9,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.coderising.common.core.AppUtils;
+
 
 
 public class ClassFileLoader {
 
 	private List<String> clzPaths = new ArrayList<String>();
 	
-	public byte[] readBinaryCode(String className) throws Exception {
+	//region 方式一：手写方式
+	public byte[] readBinaryCode2(String className) throws Exception {
 		String filePath = clzPaths.get(0)+AppUtils.packageName2Path(className)+".class";
 		File file=new File(filePath);
 		InputStream is=new FileInputStream(file);
@@ -28,18 +34,50 @@ public class ClassFileLoader {
 		}
 		return baos.toByteArray();	
 	}
+	//endregion
 	
-	public void addClassPath(String path) {
-		clzPaths.add(path);
+	//region 方式二：使用common-io的方式
+	public byte[] readBinaryCode(String className){
+		className = className.replace('.', File.separatorChar)+".class";
+		for(String path:this.clzPaths){
+			String clzFileName=path+File.separatorChar+className;
+			byte[] codes=loadClassFile(clzFileName);
+			if(codes!=null){
+				return codes;
+			}
+		}
+		return null;
 	}
 	
-	public String getClassPath(){
+	private byte[] loadClassFile(String clzFileName){
+		File f=new File(clzFileName);
+		try{
+			return IOUtils.toByteArray(new FileInputStream(f));
+		}catch(IOException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	//endregion
+	
+	public void addClassPath(String path) {
+		if(this.clzPaths.contains(path)){
+			return;
+		}
+		this.clzPaths.add(path);
+	}
+	
+	public String getClassPath2(){
 		StringBuilder sb=new StringBuilder();
 		for (String path : clzPaths) {
 			sb.append(path+";");
 		}
 		String sPath =sb.toString();
 		return sPath.substring(0, sPath.length()-1);
+	}
+	
+	public String getClassPath(){
+		return StringUtils.join(this.clzPaths,";");
 	}
 
 }
