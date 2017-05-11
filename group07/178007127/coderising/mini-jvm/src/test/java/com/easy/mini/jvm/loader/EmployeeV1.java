@@ -1,4 +1,4 @@
-package com.easy.mini.jvm.test;
+package com.easy.mini.jvm.loader;
 
 public class EmployeeV1 {
 	

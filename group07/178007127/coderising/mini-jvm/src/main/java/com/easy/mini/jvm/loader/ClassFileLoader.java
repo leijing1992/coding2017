@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.easy.core.AppUtils;
-
+import com.coderising.common.core.AppUtils;
 
 
 public class ClassFileLoader {

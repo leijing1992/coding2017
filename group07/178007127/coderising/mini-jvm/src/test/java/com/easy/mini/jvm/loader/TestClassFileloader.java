@@ -1,4 +1,4 @@
-package com.easy.mini.jvm.test;
+package com.easy.mini.jvm.loader;
 
 import org.junit.After;
 import  org.junit.Assert;
@@ -6,11 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 import com.easy.mini.jvm.loader.ClassFileLoader;
 
-public class ClassFileloaderTest {
+public class TestClassFileloader {
 
 	
-	static String path1 = "D:\\CODELOCATION\\GITHUB_CODE\\coding2017\\group07\\178007127\\001DataStructure\\bin";
-	static String path2 = "C:\temp";
+	static String path1 = "D:\\CodeLocation\\GitLocation\\coding2017\\group07\\178007127\\coderising\\mini-jvm\\src\\test\\java";
+	static String path2 = "C:\\temp";
 	
 	@Before
 	public void setUp() throws Exception {		 
@@ -39,12 +39,12 @@ public class ClassFileloaderTest {
 		ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
 		
-		String className = "com.easy.mini.jvm.test.EmployeeV1";
+		String className = "com.coderising.jvm.test.EmployeeV1";
 		
 		byte[] byteCodes = loader.readBinaryCode(className);
 		
 		// 注意：这个字节数可能和你的JVM版本有关系， 你可以看看编译好的类到底有多大
-		Assert.assertEquals(1054, byteCodes.length);
+		Assert.assertEquals(1056, byteCodes.length);
 		
 	}
 	
@@ -53,7 +53,7 @@ public class ClassFileloaderTest {
 	public void testMagicNumber() throws Exception{
     	ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
-		String className = "com.easy.mini.jvm.test.EmployeeV1";
+		String className = "com.coderising.jvm.test.EmployeeV1";
 		byte[] byteCodes = loader.readBinaryCode(className);
 		byte[] codes = new byte[]{byteCodes[0],byteCodes[1],byteCodes[2],byteCodes[3]};
 		

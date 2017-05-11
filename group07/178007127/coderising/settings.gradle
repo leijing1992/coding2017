@@ -1,1 +1,1 @@
-include 'data-structure','mini-jvm'
+include 'data-structure','mini-jvm','common-core'
