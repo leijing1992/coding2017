@@ -6,7 +6,7 @@ public abstract class OneOperandCmd extends ByteCodeCommand {
 
 	private int operand;
 	
-	public OneOperandCmd(ClassFile clzFile,String opCode) {
+	public OneOperandCmd(ClassFile clzFile, String opCode) {
 		super(clzFile, opCode);
 		
 	}
