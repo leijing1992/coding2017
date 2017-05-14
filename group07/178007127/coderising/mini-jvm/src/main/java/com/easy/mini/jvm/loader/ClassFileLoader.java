@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.coderising.common.core.AppUtils;
+import com.easy.mini.jvm.clz.ClassFile;
 
 
 
@@ -78,6 +79,12 @@ public class ClassFileLoader {
 	
 	public String getClassPath(){
 		return StringUtils.join(this.clzPaths,";");
+	}
+	
+	public ClassFile loadClass(String className){
+		byte[] codes=this.readBinaryCode(className);
+		ClassFileParser parser = new ClassFileParser();
+		return parser.parse(codes);
 	}
 
 }

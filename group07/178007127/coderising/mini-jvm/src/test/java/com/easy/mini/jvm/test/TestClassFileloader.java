@@ -1,4 +1,4 @@
-package com.easy.mini.jvm.loader;
+package com.easy.mini.jvm.test;
 
 import org.junit.After;
 import  org.junit.Assert;
@@ -11,6 +11,7 @@ public class TestClassFileloader {
 	
 	static String path1 = "D:\\CodeLocation\\GitLocation\\coding2017\\group07\\178007127\\coderising\\mini-jvm\\src\\test\\java";
 	static String path2 = "C:\\temp";
+	static String path3 = "D:\\CODELOCATION\\GITHUB_CODE\\coding2017\\group07\\178007127\\coderising\\mini-jvm\\src\\test\\java";
 	
 	@Before
 	public void setUp() throws Exception {		 
@@ -26,10 +27,11 @@ public class TestClassFileloader {
 		ClassFileLoader loader = new ClassFileLoader();
 		loader.addClassPath(path1);
 		loader.addClassPath(path2);
+		loader.addClassPath(path3);
 		
 		String clzPath = loader.getClassPath();
 		
-		Assert.assertEquals(path1+";"+path2,clzPath);
+		Assert.assertEquals(path1+";"+path2+";"+path3,clzPath);
 		
 	}
 	
@@ -37,8 +39,8 @@ public class TestClassFileloader {
 	public void testClassFileLength() throws Exception {		
 		
 		ClassFileLoader loader = new ClassFileLoader();
-		loader.addClassPath(path1);
-		
+		//loader.addClassPath(path1);
+		loader.addClassPath(path3);
 		String className = "com.coderising.jvm.test.EmployeeV1";
 		
 		byte[] byteCodes = loader.readBinaryCode(className);
@@ -52,7 +54,8 @@ public class TestClassFileloader {
     @Test	
 	public void testMagicNumber() throws Exception{
     	ClassFileLoader loader = new ClassFileLoader();
-		loader.addClassPath(path1);
+		//loader.addClassPath(path1);
+    	loader.addClassPath(path3);
 		String className = "com.coderising.jvm.test.EmployeeV1";
 		byte[] byteCodes = loader.readBinaryCode(className);
 		byte[] codes = new byte[]{byteCodes[0],byteCodes[1],byteCodes[2],byteCodes[3]};

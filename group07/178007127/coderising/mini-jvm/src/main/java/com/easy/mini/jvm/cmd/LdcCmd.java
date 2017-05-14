@@ -1,0 +1,50 @@
+package com.easy.mini.jvm.cmd;
+
+import com.easy.mini.jvm.clz.ClassFile;
+import com.easy.mini.jvm.constant.ConstantInfo;
+import com.easy.mini.jvm.constant.ConstantPool;
+import com.easy.mini.jvm.constant.StringInfo;
+import com.easy.mini.jvm.engine.ExecutionResult;
+import com.easy.mini.jvm.engine.Heap;
+import com.easy.mini.jvm.engine.JavaObject;
+import com.easy.mini.jvm.engine.StackFrame;
+
+public class LdcCmd extends OneOperandCmd {
+
+	public LdcCmd(ClassFile clzFile,String opCode) {
+		super(clzFile,opCode);		
+	}
+	
+	@Override
+	public String toString() {
+		
+		ConstantInfo info = getConstantInfo(this.getOperand());
+		
+		String value = "TBD";
+		if(info instanceof StringInfo){
+			StringInfo strInfo = (StringInfo)info;
+			value = strInfo.toString();
+		}
+		
+		return this.getOffset()+":"+this.getOpCode()+" " + this.getReadableCodeText() + " "+  value;
+		
+	}
+	public void  execute(StackFrame frame,ExecutionResult result){
+		
+		ConstantPool pool = this.getConstantPool();
+		ConstantInfo info = (ConstantInfo)pool.getConstantInfo(this.getOperand());
+		
+		if(info instanceof StringInfo){
+			StringInfo strInfo = (StringInfo)info;
+			String value = strInfo.toString();
+			JavaObject jo = Heap.getInstance().newString(value);
+			frame.getOprandStack().push(jo);
+		}
+		else{
+			//TBD 处理其他类型
+			throw new RuntimeException("Only support StringInfo constant");
+		}
+		
+		
+	}
+}
