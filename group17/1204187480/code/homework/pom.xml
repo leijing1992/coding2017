@@ -8,7 +8,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>parent</module>
+<<<<<<< HEAD
         <module>basic</module>
+=======
+        <module>coding</module>
+        <module>coderising</module>
+>>>>>>> 2df0ad089382636c2978e9fc9031881240857bdb
     </modules>
 
 </project>

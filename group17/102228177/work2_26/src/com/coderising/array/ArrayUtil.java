@@ -29,7 +29,14 @@ public class ArrayUtil {
 		
 		int[] a1 = {3, 5, 7,8};
 		int[] a2 = {4, 5, 6,7};
+<<<<<<< HEAD
 		System.out.println(Arrays.toString(util.merge(a1, a2)));
+=======
+//		System.out.println(Arrays.toString(util.merge(a1, a2)));
+		System.out.println(Arrays.toString(util.fibonacci(15)));
+		
+//		System.out.println(Arrays.toString(util.getPrimes(23)));
+>>>>>>> 2df0ad089382636c2978e9fc9031881240857bdb
 	}
 	
 	/**
@@ -107,7 +114,26 @@ public class ArrayUtil {
 	 * @return
 	 */
 	public int[] fibonacci(int max){
+<<<<<<< HEAD
 		return null;
+=======
+		List<Integer> list = new ArrayList<Integer>();
+		if (max <= 1) {
+	        return new int[]{};
+        }
+		int lo = 0;
+		int hi = 1;
+		while(hi<max){
+			list.add(hi);
+			hi = lo + hi;
+			lo = hi - lo;
+		}
+		int[] arr = new int[list.size()];
+		for (int i = 0; i < list.size(); i++) {
+			arr[i] = list.get(i);
+		}
+		return arr;
+>>>>>>> 2df0ad089382636c2978e9fc9031881240857bdb
 	}
 	
 	/**
