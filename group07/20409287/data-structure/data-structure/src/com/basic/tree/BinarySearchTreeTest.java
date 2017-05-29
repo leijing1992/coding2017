@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * Created by xudanxia on 2017/5/15.
  */
@@ -21,6 +23,7 @@ public class BinarySearchTreeTest {
         root.left.left = new BinaryTreeNode<Integer>(1);
         root.left.right = new BinaryTreeNode<Integer>(4);
         root.left.right.left = new BinaryTreeNode<Integer>(3);
+        root.left.right.right = new BinaryTreeNode<Integer>(5);
         tree = new BinarySearchTree<Integer>(root);
     }
 
@@ -64,6 +67,42 @@ public class BinarySearchTreeTest {
         BinaryTreeNode<Integer> root= tree.getRoot();
         Assert.assertEquals(3, root.left.data.intValue());
         Assert.assertEquals(4, root.left.right.data.intValue());
+    }
+
+    @Test
+    public void testLevelVisit() {
+        List<Integer> values = tree.levelVisit();
+        Assert.assertEquals("[6, 2, 8, 1, 4, 3, 5]", values.toString());
+    }
+
+    @Test
+    public void testLCA(){
+        Assert.assertEquals(2,tree.getLowestCommonAncestor(1, 5).intValue());
+        Assert.assertEquals(2,tree.getLowestCommonAncestor(1, 4).intValue());
+        Assert.assertEquals(6,tree.getLowestCommonAncestor(3, 8).intValue());
+    }
+
+    @Test
+    public void testIsValid() {
+
+        Assert.assertTrue(tree.isValid());
+
+        BinaryTreeNode<Integer> root = new BinaryTreeNode<Integer>(6);
+        root.left = new BinaryTreeNode<Integer>(2);
+        root.right = new BinaryTreeNode<Integer>(8);
+        root.left.left = new BinaryTreeNode<Integer>(4);
+        root.left.right = new BinaryTreeNode<Integer>(1);
+        root.left.right.left = new BinaryTreeNode<Integer>(3);
+        tree = new BinarySearchTree<Integer>(root);
+
+        Assert.assertFalse(tree.isValid());
+    }
+
+    @Test
+    public void testGetNodesBetween(){
+        List<Integer> numbers = this.tree.getNodesBetween(3,  8);
+        System.out.println(numbers.toString());
+
     }
 }
 
