@@ -1,22 +1,23 @@
 package com.coderising.jvm.field;
 
+import com.coderising.jvm.attr.AttributeInfo;
+import com.coderising.jvm.attr.ConstantValue;
 import com.coderising.jvm.constant.ConstantPool;
 import com.coderising.jvm.constant.UTF8Info;
 import com.coderising.jvm.loader.ByteCodeIterator;
 
-/**
- * Created by xudanxia on 2017/4/11.
- */
-public class Field {
+import static com.sun.tools.classfile.Attribute.ConstantValue;
 
+
+public class Field {
     private int accessFlag;
     private int nameIndex;
     private int descriptorIndex;
 
-
     private ConstantPool pool;
+    private ConstantValue constValue;
 
-    public Field(int accessFlag, int nameIndex, int descriptorIndex, ConstantPool pool) {
+    public Field( int accessFlag, int nameIndex, int descriptorIndex,ConstantPool pool) {
 
         this.accessFlag = accessFlag;
         this.nameIndex = nameIndex;
@@ -26,20 +27,40 @@ public class Field {
 
     public String toString() {
         String name = ((UTF8Info)pool.getConstantInfo(this.nameIndex)).getValue();
+
         String desc = ((UTF8Info)pool.getConstantInfo(this.descriptorIndex)).getValue();
-        return name + ":" + desc;
+        return name +":"+ desc;
     }
 
-    public static Field parse(ConstantPool pool, ByteCodeIterator iter) {
 
-        int accessFlag = iter.nextU2toInt();
-        int nameIndex = iter.nextU2toInt();
-        int descIndex = iter.nextU2toInt();
-        int attrCount = iter.nextU2toInt();
-        System.out.println("Attribute Count: " + attrCount);
-        if (attrCount > 0) {
-            throw new RuntimeException("没有实现字段属性!");
+    public static Field parse(ConstantPool pool,ByteCodeIterator iter){
+
+        int accessFlag = iter.nextU2ToInt();
+        int nameIndex = iter.nextU2ToInt();
+        int descIndex = iter.nextU2ToInt();
+        int attribCount = iter.nextU2ToInt();
+        //System.out.println("field attribute count:"+ attribCount);
+
+        Field f = new Field(accessFlag, nameIndex, descIndex,pool);
+
+        for( int i=1; i<= attribCount; i++){
+            int attrNameIndex = iter.nextU2ToInt();
+            String attrName = pool.getUTF8String(attrNameIndex);
+
+            if(AttributeInfo.CONST_VALUE.equals(attrName)){
+                int attrLen = iter.nextU4ToInt();
+                ConstantValue constValue = new ConstantValue(attrNameIndex, attrLen);
+                constValue.setConstValueIndex(iter.nextU2ToInt());
+                f.setConstantValue(constValue);
+            } else{
+                throw new RuntimeException("the attribute " + attrName + " has not been implemented yet.");
+            }
         }
-        return new Field(accessFlag, nameIndex, descIndex, pool);
+
+        return f;
     }
+    public void setConstantValue(ConstantValue constValue) {
+        this.constValue = constValue;
+    }
+
 }
